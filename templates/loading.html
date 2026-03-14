@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generating Website - SnapSite</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <style>
+    .loading-shell {
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+    }
+    .loading-card {
+      max-width: 520px;
+      text-align: center;
+      padding: 2rem;
+    }
+    .spinner {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      border: 5px solid rgba(15, 118, 110, 0.2);
+      border-top-color: #0f766e;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <main class="container loading-shell">
+    <div class="card loading-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <h1>Generating your website...</h1>
+      <p>This can take 10 to 20 seconds. Please keep this tab open while SnapSite prepares your preview and Netlify export.</p>
+    </div>
+  </main>
+
+  <form id="generator-submit" action="{{ url_for('generate_site') }}" method="POST"></form>
+  <script>
+    window.addEventListener("load", function () {
+      document.getElementById("generator-submit").submit();
+    });
+  </script>
+</body>
+</html>

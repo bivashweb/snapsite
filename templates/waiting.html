@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waiting for Verification - SnapSite</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page center page-shell narrow-page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <h1>Payment submitted successfully.</h1>
+    <p>Please wait while the admin verifies your payment.</p>
+    <p>Access to website creation will be enabled after approval. If verification is delayed, refresh this page after a short wait.</p>
+    <div class="card inline-card">
+      <p>Verification in progress...</p>
+    </div>
+    <p style="margin-top:1rem;">
+      <a class="link" href="{{ url_for('waiting') }}">Refresh Status</a>
+    </p>
+  </main>
+</body>
+</html>

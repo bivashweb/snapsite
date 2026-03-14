@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Too Many Requests - SnapSite</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page center page-shell narrow-page">
+    <div class="card">
+      <h1>Too many generation attempts</h1>
+      <p>Please wait a minute before submitting the website form again.</p>
+      <div class="actions center-actions">
+        <a class="btn" href="{{ url_for('create_site') }}">Back to Form</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

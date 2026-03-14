@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{business_name}} | Premium Services</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="--theme: {{theme_color}};">
+  <nav>
+    <strong>{{business_name}}</strong>
+    <a href="https://wa.me/{{whatsapp}}" target="_blank" rel="noopener">WhatsApp</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <img src="{{logo_src}}" alt="Logo" class="logo">
+      <h1>{{business_name}}</h1>
+      <p>{{description}}</p>
+    </section>
+
+    <section class="panel">
+      <h2>About</h2>
+      <p>{{description}}</p>
+    </section>
+
+    <section class="panel">
+      <h2>Services</h2>
+      <ul>{{services_list}}</ul>
+    </section>
+
+    <section class="panel">
+      <h2>Contact</h2>
+      <p>Call: {{phone}}</p>
+      <p>{{location}}</p>
+    </section>
+
+    <section class="panel">
+      <h2>Map</h2>
+      <iframe src="https://maps.google.com/maps?q={{map_query}}&output=embed"></iframe>
+    </section>
+  </main>
+</body>
+</html>

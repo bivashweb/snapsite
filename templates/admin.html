@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - SnapSite</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page">
+    <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap;">
+      <h1>Admin Dashboard</h1>
+      <a class="btn small" href="{{ url_for('admin_logout') }}">Logout</a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="grid two" style="margin-bottom: 1rem;">
+      <div class="card"><strong>Total Payments:</strong> {{ total_payments }}</div>
+      <div class="card"><strong>Approved Payments:</strong> {{ approved_payments }}</div>
+      <div class="card"><strong>Generated Websites:</strong> {{ total_sites }}</div>
+      <div class="card"><strong>Deployed Websites:</strong> {{ deployed_sites }}</div>
+      <div class="card"><strong>Creators:</strong> {{ total_creators }}</div>
+      <div class="card"><strong>Referral Earnings:</strong> INR {{ total_referral_earnings }}</div>
+    </div>
+
+    <h2>Create Referral Creator</h2>
+    <div class="card" style="margin-bottom: 1rem;">
+      <form class="form" action="{{ url_for('create_creator') }}" method="POST">
+        <label>
+          Creator Name
+          <input type="text" name="creator_name" maxlength="80" required />
+        </label>
+        <label>
+          Referral Code (optional)
+          <input type="text" name="referral_code" maxlength="24" placeholder="Leave blank to auto-generate" />
+        </label>
+        <button class="btn" type="submit">Create Creator</button>
+      </form>
+    </div>
+
+    <h2>Creators</h2>
+    <div class="card" style="margin-bottom: 1rem;">
+      <table>
+        <thead>
+          <tr>
+            <th>Creator Name</th>
+            <th>Referral Code</th>
+            <th>Total Referrals</th>
+            <th>Total Earnings</th>
+            <th>Referral Link</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for creator in creators %}
+          {% set creator_link = creator_links.get(creator['id'], '') %}
+          <tr>
+            <td>{{ creator['name'] }}</td>
+            <td>{{ creator['referral_code'] }}</td>
+            <td>{{ creator['total_referrals'] }}</td>
+            <td>INR {{ creator['total_earnings'] }}</td>
+            <td><a class="link" href="{{ creator_link }}" target="_blank" rel="noopener">{{ creator_link }}</a></td>
+            <td>
+              <button class="btn small" type="button" data-copy-link="{{ creator_link }}">Copy Link</button>
+              <a class="btn small" href="{{ url_for('creator_payments', creator_id=creator['id']) }}">View Referrals</a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6">No creators yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Generated Websites</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Payment ID</th>
+            <th>Site Slug</th>
+            <th>Preview</th>
+            <th>Preview Link</th>
+            <th>Live URL</th>
+            <th>Netlify Site Name</th>
+            <th>Created At (UTC)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for site in sites %}
+          <tr>
+            <td>{{ site['payment_id'] or '-' }}</td>
+            <td>{{ site['slug'] }}</td>
+            <td>
+              <div class="site-preview-frame">
+                <iframe src="{{ site['preview_url'] }}" title="Preview of {{ site['slug'] }}" loading="lazy"></iframe>
+              </div>
+            </td>
+            <td><a class="link" href="{{ site['preview_url'] }}" target="_blank" rel="noopener">{{ site['preview_url'] }}</a></td>
+            <td>
+              {% if site['site_url'] and site['site_url'] != site['preview_url'] %}
+              <a class="link" href="{{ site['site_url'] }}" target="_blank" rel="noopener">{{ site['site_url'] }}</a>
+              {% else %}
+              -
+              {% endif %}
+            </td>
+            <td>{{ site['netlify_site_name'] or '-' }}</td>
+            <td>{{ site['created_at'] }}</td>
+            <td>
+              <a class="btn small" href="{{ site['preview_url'] }}" target="_blank" rel="noopener">Open Preview</a>
+              <a class="btn small" href="{{ url_for('export_site', name=site['slug']) }}">Download ZIP</a>
+              <form action="{{ url_for('delete_site', slug=site['slug']) }}" method="POST" style="display:inline;">
+                <button class="btn small" type="submit">Delete Site</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8">No sites generated yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Payments</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Payment ID</th>
+            <th>UTR Number</th>
+            <th>Creator</th>
+            <th>Referral Code</th>
+            <th>Referral Status</th>
+            <th>Commission</th>
+            <th>Screenshot</th>
+            <th>Status</th>
+            <th>Date (UTC)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payments %}
+          <tr>
+            <td>{{ payment['id'] }}</td>
+            <td>{{ payment['txn_id'] }}</td>
+            <td>{{ payment['creator_name'] or '-' }}</td>
+            <td>{{ payment['referral_code'] or '-' }}</td>
+            <td>{{ payment['referral_status'] or '-' }}</td>
+            <td>{% if payment['referral_commission'] %}INR {{ payment['referral_commission'] }}{% else %}-{% endif %}</td>
+            <td>
+              <a class="link" href="{{ url_for('serve_payment_screenshot', filename=payment['screenshot']) }}" target="_blank" rel="noopener">
+                View Screenshot
+              </a>
+            </td>
+            <td>{{ payment['status'] }}</td>
+            <td>{{ payment['date'] }}</td>
+            <td>
+              <form action="{{ url_for('approve_payment', payment_id=payment['id']) }}" method="POST" style="display:inline;">
+                <button class="btn small" type="submit">Approve</button>
+              </form>
+              <form action="{{ url_for('reject_payment', payment_id=payment['id']) }}" method="POST" style="display:inline;">
+                <button class="btn small" type="submit">Reject</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="10">No payments yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if selected_creator %}
+    <h2>Creator Payments: {{ selected_creator['name'] }}</h2>
+    <div class="card">
+      <p><strong>Referral Code:</strong> {{ selected_creator['referral_code'] }}</p>
+      <p><strong>Total Referrals:</strong> {{ selected_creator['total_referrals'] }}</p>
+      <p><strong>Total Earnings:</strong> INR {{ selected_creator['total_earnings'] }}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Payment ID</th>
+            <th>UTR Number</th>
+            <th>Status</th>
+            <th>Referral Status</th>
+            <th>Commission</th>
+            <th>Site Generated</th>
+            <th>Date (UTC)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in creator_payments %}
+          <tr>
+            <td>{{ payment['id'] }}</td>
+            <td>{{ payment['txn_id'] }}</td>
+            <td>{{ payment['status'] }}</td>
+            <td>{{ payment['referral_status'] or '-' }}</td>
+            <td>INR {{ payment['referral_commission'] }}</td>
+            <td>{{ 'Yes' if payment['site_generated'] else 'No' }}</td>
+            <td>{{ payment['date'] }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7">No payments linked to this creator yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </main>
+  <script>
+    document.querySelectorAll("[data-copy-link]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        const link = this.getAttribute("data-copy-link");
+        try {
+          await navigator.clipboard.writeText(link);
+          this.textContent = "Copied Link";
+        } catch (error) {
+          this.textContent = "Copy failed";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

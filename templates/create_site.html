@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Website - SnapSite</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page page-shell">
+    <h1>Create Your Website</h1>
+    <p>Approved payments can generate one AI-built site and save it into a Netlify-ready folder.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="card helper-card">
+      <strong>Need help?</strong>
+      <p>If website generation fails temporarily, wait a moment and submit the same details again. This usually means the AI service or auto-deployment did not respond in time.</p>
+    </div>
+    <form class="card form form-panel" action="{{ url_for('generate_site') }}" method="POST" enctype="multipart/form-data">
+      <label>Business Name* <input type="text" name="business_name" maxlength="80" required></label>
+      <label>Business Type* <input type="text" name="business_type" maxlength="80" required></label>
+      <label>Description <textarea name="description" rows="4" maxlength="600" placeholder="Optional: Gemini can expand this"></textarea></label>
+      <label>Services <input type="text" name="services" maxlength="400" placeholder="Optional: comma separated services"></label>
+      <label>Phone Number* <input type="text" name="phone" maxlength="20" required></label>
+      <label>WhatsApp Number* <input type="text" name="whatsapp" maxlength="20" required></label>
+      <label>Address* <input type="text" name="address" maxlength="160" required></label>
+      <label>City* <input type="text" name="city" maxlength="80" required></label>
+      <label>Google Maps Link (optional) <input type="url" name="google_maps_link" maxlength="500" placeholder="Paste a Google Maps share link"></label>
+      <label>Logo Upload <input type="file" name="logo_upload" accept=".png,.jpg,.jpeg,.webp,.svg"></label>
+      <label>Template Style
+        <select name="template_style" required>
+          <option value="modern">Modern</option>
+          <option value="minimal">Minimal</option>
+          <option value="business">Business</option>
+        </select>
+      </label>
+      <button class="btn" type="submit">Generate AI Website</button>
+    </form>
+  </main>
+</body>
+</html>

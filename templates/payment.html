@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - SnapSite</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page page-shell">
+    <h1>Complete UPI Payment</h1>
+    <p>Pay INR 59 to unlock website generation.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card payment-box">
+      <p><strong>Amount:</strong> INR 59</p>
+      <p><strong>UPI ID:</strong> bivashgamer06@okhdfcbank</p>
+      <p>
+        <a class="btn" href="upi://pay?pa=bivashgamer06@okhdfcbank&pn=SnapSite&am=59&cu=INR">
+          Pay via UPI App
+        </a>
+      </p>
+      <p>Scan QR (if your device supports it):</p>
+      <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3Dbivashgamer06%40okhdfcbank%26pn%3DSnapSite%26am%3D59%26cu%3DINR"
+        alt="UPI QR Code"
+        class="payment-qr"
+        width="220"
+        height="220"
+      />
+    </div>
+
+    <div class="card payment-box">
+      <h3>Verify Payment</h3>
+      <p class="muted-copy">After you submit the payment details, admin verification may take a short time before website creation is unlocked.</p>
+      <form action="{{ url_for('verify_payment') }}" method="POST" enctype="multipart/form-data" class="form">
+        <label>
+          UPI Transaction ID
+          <input type="text" name="txn_id" required />
+        </label>
+        <label>
+          Referral Code (optional)
+          <input type="text" name="referral_code" maxlength="24" value="{{ referral_code or '' }}" placeholder="Enter creator referral code" />
+        </label>
+        <label>
+          Payment Screenshot
+          <input type="file" name="payment_screenshot" accept=".png,.jpg,.jpeg,.webp,.svg" required />
+        </label>
+        <button class="btn" type="submit">Submit & Continue</button>
+      </form>
+    </div>
+
+    <p><a class="link" href="{{ url_for('landing') }}">Back to landing</a></p>
+  </main>
+</body>
+</html>

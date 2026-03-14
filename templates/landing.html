@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SnapSite - Create a Business Website in 60 Seconds</title>
+  <meta name="description" content="Create a professional business website instantly using AI. Only INR 59." />
+  <meta property="og:title" content="SnapSite - Create a Business Website in 60 Seconds" />
+  <meta property="og:description" content="Create a professional business website instantly using AI. Only INR 59." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.url }}" />
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="logo brand-lockup" href="{{ url_for('landing') }}">
+        <img src="{{ url_for('static', filename='brand/logo.svg') }}" alt="" class="brand-mark" />
+        <span>SnapSite</span>
+      </a>
+      <div class="actions nav-actions">
+        <a class="link" href="#pricing">Pricing</a>
+        <a class="link" href="#faq">FAQ</a>
+        <a class="btn small" href="{{ url_for('payment') }}">Create My Website</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero hero-launch">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">AI websites for local businesses</span>
+        <h1>Create your business website in 60 seconds.</h1>
+        <p class="lead">SnapSite turns your business details into a fast, mobile-ready website with WhatsApp, Google Maps, downloadable files, and instant hosting support.</p>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('payment') }}">Create My Website</a>
+          <a class="btn secondary" href="#demos">See Demo Sites</a>
+        </div>
+      </div>
+      <div class="hero-card launch-card">
+        <p class="card-kicker">Launch stack</p>
+        <ul class="check-list">
+          <li>Business-ready landing page</li>
+          <li>WhatsApp click-to-chat button</li>
+          <li>Google Maps section</li>
+          <li>Instant hosted URL</li>
+          <li>ZIP download for backup or manual deploy</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="demos" class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Demo Sites</span>
+          <h2>See what SnapSite can generate</h2>
+        </div>
+        <p>Explore sample websites built for common small-business categories.</p>
+      </div>
+      <div class="grid three">
+        <article class="card demo-card">
+          <span class="demo-tag">Restaurant</span>
+          <h3>Riverstone Kitchen</h3>
+          <p>Warm food-focused layout with menu highlights, map, and reservation CTA.</p>
+          <a class="btn small" href="/site/restaurant-demo" target="_blank" rel="noopener">Open Demo</a>
+        </article>
+        <article class="card demo-card">
+          <span class="demo-tag">Repair Service</span>
+          <h3>FixRight Repair</h3>
+          <p>Fast service-style homepage with WhatsApp support and emergency call CTA.</p>
+          <a class="btn small" href="/site/repair-service-demo" target="_blank" rel="noopener">Open Demo</a>
+        </article>
+        <article class="card demo-card">
+          <span class="demo-tag">Coaching Center</span>
+          <h3>NorthStar Coaching</h3>
+          <p>Structured academic layout with program cards, trust points, and enrollment CTA.</p>
+          <a class="btn small" href="/site/coaching-center-demo" target="_blank" rel="noopener">Open Demo</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section muted">
+    <div class="container">
+      <div class="pricing-shell">
+        <div>
+          <span class="eyebrow">Pricing</span>
+          <h2>INR 59 - Basic Website</h2>
+          <p>One simple price for one complete website generation.</p>
+        </div>
+        <div class="card pricing-card">
+          <p class="price">INR 59</p>
+          <ul class="check-list">
+            <li>Responsive website</li>
+            <li>WhatsApp button</li>
+            <li>Google Maps</li>
+            <li>Instant hosting</li>
+            <li>Downloadable files</li>
+          </ul>
+          <a class="btn" href="{{ url_for('payment') }}">Create My Website</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Why SnapSite?</span>
+          <h2>Built for public launch, not just a preview</h2>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card trust-card"><h3>AI generated</h3><p>Business details become a polished website without manual design work.</p></article>
+        <article class="card trust-card"><h3>Mobile responsive</h3><p>Layouts are built to work across phones, tablets, and desktop screens.</p></article>
+        <article class="card trust-card"><h3>Ready in seconds</h3><p>From form input to sharable preview, the process is designed for speed.</p></article>
+        <article class="card trust-card"><h3>Designed for small businesses</h3><p>Made for restaurants, repair shops, coaching centers, clinics, and local services.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section faq-section">
+    <div class="container">
+      <span class="eyebrow">FAQ</span>
+      <h2>Common questions</h2>
+      <div class="faq-list">
+        <details class="card" open>
+          <summary>How long does it take?</summary>
+          <p>Most websites are generated in around 15 to 20 seconds after you submit your business details.</p>
+        </details>
+        <details class="card">
+          <summary>Do I need coding knowledge?</summary>
+          <p>No. SnapSite is designed for non-technical business owners and handles the website generation for you.</p>
+        </details>
+        <details class="card">
+          <summary>Can I edit my website later?</summary>
+          <p>Yes. You can download the generated files as a ZIP and edit the HTML later using any code editor or developer.</p>
+        </details>
+        <details class="card">
+          <summary>How do I deploy to Netlify?</summary>
+          <p>If auto-deployment is available, SnapSite handles it. Otherwise you can download the ZIP and upload it to Netlify Drop.</p>
+        </details>
+        <details class="card">
+          <summary>Is INR 59 a one-time payment?</summary>
+          <p>Yes. The INR 59 charge is a one-time payment for one website generation.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container center">
+      <h2>Launch your business online today.</h2>
+      <p>Start with one short form and get a website you can share immediately.</p>
+      <a class="btn" href="{{ url_for('payment') }}">Create My Website</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="logo brand-lockup" href="{{ url_for('landing') }}">
+          <img src="{{ url_for('static', filename='brand/logo.svg') }}" alt="" class="brand-mark" />
+          <span>SnapSite</span>
+        </a>
+        <p>Create and launch a business website in minutes.</p>
+      </div>
+      <div>
+        <p><strong>Contact</strong></p>
+        <p><a class="link" href="mailto:bivash.web@gmail.com">bivash.web@gmail.com</a></p>
+      </div>
+      <div>
+        <p><strong>Legal</strong></p>
+        <p><a class="link" href="{{ url_for('privacy') }}">Privacy Policy</a></p>
+        <p><a class="link" href="{{ url_for('terms') }}">Terms</a></p>
+      </div>
+      <div>
+        <p><strong>Copyright</strong></p>
+        <p>SnapSite &copy; 2026</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

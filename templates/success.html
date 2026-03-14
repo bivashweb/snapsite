@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success - SnapSite</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand/favicon.ico') }}" sizes="any" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+  <main class="container page page-shell">
+    <div class="center">
+      <h1>Your website is live!</h1>
+      {% if deployed_url %}
+      <p>Your website is live:</p>
+      <p><a class="link" href="{{ deployed_url }}" target="_blank" rel="noopener">{{ deployed_url }}</a></p>
+      {% else %}
+      <p>Preview URL: <a class="link" href="{{ preview_url }}" target="_blank" rel="noopener">{{ preview_url }}</a></p>
+      {% endif %}
+      <p>Saved folder: <strong>{{ site_folder }}</strong></p>
+      <p>Generator used: <strong>{{ generation_mode }}</strong></p>
+      <div class="actions center-actions">
+        <a class="btn" href="{{ deployed_url or preview_url }}" target="_blank" rel="noopener">Open Website</a>
+        <button
+          class="btn"
+          type="button"
+          data-copy-link="{{ share_url }}"
+        >
+          Copy Link
+        </button>
+        <a class="btn" href="{{ url_for('export_site', name=site_name) }}">Download ZIP</a>
+        <a class="btn" href="{{ whatsapp_share_url }}" target="_blank" rel="noopener">Share on WhatsApp</a>
+      </div>
+      {% if deployed_url %}
+      <p>The Netlify deployment completed automatically.</p>
+      {% else %}
+      <p>Upload this ZIP file to Netlify Drop to publish your website.</p>
+      {% endif %}
+      {% if deployment_error %}
+      <div class="flash warning inline-flash">Netlify auto-deployment did not complete this time. Your website files are ready, and you can still open the preview or upload the ZIP manually.</div>
+      {% endif %}
+    </div>
+
+    <div class="grid two" style="margin-top: 1rem; align-items: start;">
+      <div class="card preview-pane">
+        <iframe
+          src="{{ preview_url }}"
+          title="Generated site preview"
+          class="site-preview-embed"
+        ></iframe>
+      </div>
+      <div class="card center qr-card">
+        <h2>Scan QR Code</h2>
+        <p>Open the generated website on another device.</p>
+        {% if qr_code_url %}
+        <img src="{{ qr_code_url }}" alt="QR code for generated website" class="qr-image" />
+        {% endif %}
+        <p><a class="link" href="{{ share_url }}" target="_blank" rel="noopener">{{ share_url }}</a></p>
+      </div>
+    </div>
+
+    {% if not deployed_url %}
+    <div class="card publish-card" style="margin-top: 1rem;">
+      <h2>Publish on Netlify</h2>
+      <p>Steps to publish your website:</p>
+      <p>1. Go to <a class="link" href="https://app.netlify.com/drop" target="_blank" rel="noopener">https://app.netlify.com/drop</a></p>
+      <p>2. Drag and drop the downloaded ZIP file</p>
+      <p>3. Netlify will instantly publish your website</p>
+    </div>
+    {% endif %}
+
+    <p class="center" style="margin-top: 1rem;">
+      <a class="btn" href="{{ url_for('landing') }}">Back to Home</a>
+    </p>
+  </main>
+  <script>
+    document.querySelector("[data-copy-link]")?.addEventListener("click", async function () {
+      const link = this.getAttribute("data-copy-link");
+      try {
+        await navigator.clipboard.writeText(link);
+        this.textContent = "Copied Link";
+      } catch (error) {
+        this.textContent = "Copy failed";
+      }
+    });
+  </script>
+</body>
+</html>
